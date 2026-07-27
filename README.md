@@ -19,26 +19,10 @@ fixed here.
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    subgraph Branch["Cold room (per branch)"]
-        Sensor["DS18B20 sensor"] --> Pi["Raspberry Pi\nedge/app"]
-        Pi -- "email alert >= 26C" --> SMTP["SMTP relay"]
-    end
+<p align="center">
+    <img width="3588" height="1152" alt="image" src="https://github.com/user-attachments/assets/1533512d-372b-49a4-b624-6cd600c4c930" />
 
-    Pi -- "write metrics" --> Influx["InfluxDB\n(server/)"]
-    Influx --> Grafana["Grafana\n(server/)"]
-    ECR["Amazon ECR"] -- "docker compose pull" --> Pi
-
-    subgraph AWS["AWS (infra/, Terraform)"]
-        EC2["EC2 instance"] --- Influx
-        EC2 --- Grafana
-        SSM["SSM Parameter Store\n(device secrets)"] -. "read at provisioning" .-> Pi
-        ECR
-    end
-
-    GHA["GitHub Actions"] -- "OIDC, no static keys" --> ECR
-```
+</p>
 
 - **`edge/bootstrap/`** - bash scripts that provision a fresh Raspberry Pi: hostname,
   Wi-Fi, Docker, Tailscale, a network watchdog, and the app itself. Ported from
