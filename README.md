@@ -1,7 +1,7 @@
 # IoT Cold-Chain Monitor
 
 <p>
-    <img src="https://github.com/DanyM117/iot-cold-chain-monitor/blob/master/Resources/IoT-PixelArt-Presentation.gif?raw=true" width=158 alt="Thermal Rasp IoT Retro loop"/>
+    <img src="https://github.com/DanyM117/iot-cold-chain-monitor/blob/master/Resources/IoT-PixelArt-Presentation.gif?raw=true" alt="Thermal Rasp IoT Retro loop"/>
 </p>
 
 
