@@ -1,0 +1,7 @@
+# AVD-AWS-0164: "Subnet associates public IP address" (infra/modules/networking).
+# Accepted risk, not a false positive: this is a single low-cost EC2 instance
+# with no NAT gateway/bastion budget. Exposure is mitigated by the security
+# group restricting SSH (22) and Grafana (3000) to var.admin_cidr_blocks only
+# (never 0.0.0.0/0, enforced by a Terraform validation block) plus Tailscale
+# for day-to-day access. Revisit if this ever needs a private subnet + NAT.
+AVD-AWS-0164

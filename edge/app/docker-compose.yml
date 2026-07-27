@@ -1,0 +1,19 @@
+services:
+  monitor_clima:
+    image: ${ECR_IMAGE}
+    container_name: monitor_clima
+    restart: always
+    # Explicit device mounts replace the old `privileged: true` - the
+    # container only gets access to the I2C bus and GPIO memory it needs,
+    # not the whole host.
+    devices:
+      - "/dev/i2c-1:/dev/i2c-1"
+      - "/dev/gpiomem:/dev/gpiomem"
+    # GIDs of the host's i2c/gpio groups (find with `getent group i2c gpio`);
+    # lets the non-root container user access the mounted devices without
+    # running privileged.
+    group_add:
+      - "${I2C_GID}"
+      - "${GPIO_GID}"
+    env_file:
+      - .env

@@ -1,0 +1,62 @@
+{
+  "title": "Cold Rooms - Temperature Monitoring",
+  "uid": "cold-rooms-temp",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Temperature by branch",
+      "type": "timeseries",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 26 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "query": "from(bucket: \"${INFLUX_BUCKET}\") |> range(start: v.timeRangeStart, stop: v.timeRangeStop) |> filter(fn: (r) => r._measurement == \"clima_oficina\" and r._field == \"temperatura\")",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Current temperature per branch",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 10 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 22 },
+              { "color": "red", "value": 26 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "query": "from(bucket: \"${INFLUX_BUCKET}\") |> range(start: -5m) |> filter(fn: (r) => r._measurement == \"clima_oficina\" and r._field == \"temperatura\") |> last() |> group(columns: [\"ubicacion\"])",
+          "refId": "A"
+        }
+      ]
+    }
+  ]
+}
